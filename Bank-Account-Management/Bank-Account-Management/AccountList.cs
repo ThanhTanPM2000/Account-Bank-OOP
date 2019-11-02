@@ -11,24 +11,22 @@ namespace Bank_Account_Management
     class AccountList
     {
         private ArrayList Accounts = new ArrayList();
-
         public void NewAccounts()
         {
             Account acc = new Account();
             acc.FillInfor();
+            acc.Query();
             Accounts.Add(acc);
         }
-
         public void SaveFile()
         {
             Console.WriteLine("nhập vào file mà bạn muốn lưu");
             string filename = Console.ReadLine();
             //đọcfile
-
             try
             {
                 //tạo luồng file truy cập
-                FileStream output = new FileStream(filename,
+                FileStream output = new FileStream(filename+".txt",
                     FileMode.CreateNew, FileAccess.Write);
 
                 //thiết lập writer
@@ -43,7 +41,6 @@ namespace Bank_Account_Management
                 //đóng kết nối
                 writer.Close();
                 output.Close();
-
             }
             catch (IOException e)
             {
@@ -54,11 +51,10 @@ namespace Bank_Account_Management
         public void LoadFile()
         {
             // đọc tên file chứa dữ liệu 
-            Console.WriteLine("nhập file mà bạn muốn đọc ");
+            Console.WriteLine("nhập file mà bạn muốn load ");
             string FileLoad = Console.ReadLine();
             // xóa danh sách
             Accounts.Clear();
-
             try
             {
                 // tạo luồng đọc file
@@ -72,20 +68,17 @@ namespace Bank_Account_Management
                 {
                     //tách chuỗi đọc ra thành các chuỗi con có phân cách nhau dấu ','
                     string[] list = str.Split(',');
-
                     //tạo đối tượng account mới
                     Account acc = new Account(int.Parse(list[0]), list[1], list[2], decimal.Parse(list[3]));
                     //đưa đối tượng mới đọc vào danh sách account
                     Accounts.Add(acc);
                 }
-
                 // đóng luồng
                 input.Close();
                 reader.Close();
             }
             catch (IOException e)
             {
-
                 Console.WriteLine(e.Message);
             }
         }
